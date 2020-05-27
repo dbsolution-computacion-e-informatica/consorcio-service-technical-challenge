@@ -1,0 +1,17 @@
+{
+  "name": "consorcio-poc-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "serverless-dynamodb-fixtures": "0.0.4",
+    "serverless-offline": "^6.1.7",
+    "serverless-python-requirements": "^5.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,30 @@
+Resources:
+  DnaAnalyseDynamodbTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.tables.dnaAnalyse}
+      AttributeDefinitions:
+        - AttributeName: hash
+          AttributeType: S
+      KeySchema:
+        - AttributeName: hash
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+
+  DnaAnalyseStatsDynamodbTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.tables.dnaAnalyseStats}
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: N
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

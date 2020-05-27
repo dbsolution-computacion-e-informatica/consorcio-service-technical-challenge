@@ -1,0 +1,5 @@
+Resources:
+    DnaAnalyseQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: ${self:service.name}-dna-analyse-queue-${self:provider.stage}

@@ -1,0 +1,82 @@
+Resources:
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      # Generate a name based on the stage
+      UserPoolName: ${self:service.name}-dbsolution-${self:provider.stage}-user-pool
+      # Set email as an alias
+      UsernameAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      Schema:
+        - Name: email
+          Required: true
+          Mutable: true
+
+  # create a user pool as normal
+  CognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      # Generate an app client name based on the stage
+      ClientName: ${self:service.name}-dbsolution-${self:provider.stage}-user-pool-client
+      UserPoolId:
+        Ref: CognitoUserPool
+      GenerateSecret: true
+      AllowedOAuthFlows:
+        - code
+      AllowedOAuthScopes:
+        - openid
+      CallbackURLs:
+        - http://localhost/
+      LogoutURLs:
+        - http://localhost/
+
+  IdentityPool:
+    Type: "AWS::Cognito::IdentityPool"
+    Properties:
+      IdentityPoolName:
+        Fn::Join:
+          - '_'
+          - Fn::Split:
+            - '-'
+            - ${self:service.name}-dbsolution-${self:provider.stage}_identitypool
+      AllowUnauthenticatedIdentities: true
+      CognitoIdentityProviders:
+        - ClientId:
+            Ref: CognitoUserPoolClient
+          ProviderName:
+            Fn::Join:
+            - ""
+            - - cognito-idp.
+              - Ref: "AWS::Region"
+              - .amazonaws.com/
+              - Ref: CognitoUserPool
+
+  # then add an authorizer you can reference later
+  ApiGatewayAuthorizer:
+    DependsOn:
+    # this is pre-defined by serverless
+    - ApiGatewayRestApi
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      Name: cognito_auth
+      # apparently ApiGatewayRestApi is a global string
+      RestApiId: { "Ref" : "ApiGatewayRestApi" }
+      IdentitySource: method.request.header.Authorization
+      Type: COGNITO_USER_POOLS
+      ProviderARNs:
+      - Fn::GetAtt: [CognitoUserPool, Arn]
+
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: ${self:service.name}-dbsolution-${self:provider.stage}
+      UserPoolId:
+        Ref: CognitoUserPool
+
+# Print out the Id of the User Pool that is created
+Outputs:
+  UserPoolId:
+    Value:
+      Ref: CognitoUserPool
