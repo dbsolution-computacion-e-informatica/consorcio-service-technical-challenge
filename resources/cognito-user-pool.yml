@@ -23,6 +23,7 @@ Resources:
       UserPoolId:
         Ref: CognitoUserPool
       GenerateSecret: true
+      AllowedOAuthFlowsUserPoolClient: true
       AllowedOAuthFlows:
         - code
       AllowedOAuthScopes:
@@ -31,6 +32,10 @@ Resources:
         - http://localhost/
       LogoutURLs:
         - http://localhost/
+      ExplicitAuthFlows:
+        - ADMIN_NO_SRP_AUTH
+      SupportedIdentityProviders:
+        - COGNITO
 
   IdentityPool:
     Type: "AWS::Cognito::IdentityPool"
