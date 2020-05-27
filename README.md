@@ -1,7 +1,7 @@
 # Technical challenge / Consorcio
 
 This project include serverless developments based on:
-- Python 2.7
+- Python 3.8
 - NodeJS v10.16
 - NPM 6.14
 - AWS CLI 1.16
@@ -13,7 +13,7 @@ Packages listed in [/src/requirements.txt](src/requirements.txt) file
 ## Tools Instalation 
 
 This documentation assume that the following components are already installed on your system:
-- Python 2.7
+- Python 3.8
 - NodeJS v10.16
 - NPM 6.14
 - AWS CLI 1.16
