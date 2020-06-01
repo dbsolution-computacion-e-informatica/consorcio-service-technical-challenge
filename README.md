@@ -47,3 +47,11 @@ Finally, deploy the project to Amazon Web Service using Serverless Framwwork
 ```
 sls deploy
 ```
+
+## Unit tests
+
+Some unit tests are available using:
+
+```
+python src/tests.py
+```
